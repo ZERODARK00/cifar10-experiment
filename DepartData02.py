@@ -110,7 +110,7 @@ for i in range(100000):
 	if i%100 == 0:
 		train_accuracy = sess.run(accuracy,feed_dict={ x:batch_x, y_: batch_y, keep_prob: 1.0})
 		print "step %d, training accuracy %g"%(i, train_accuracy)
-	sess.run(train_step,feed_dict = {x:batch_x,y_:batch_y,keep_prob:0.5})
+	sess.run(train_step,feed_dict = {x:batch_x,y_:batch_y,keep_prob:0.6})
 
 #评价训练结果
 print "test accuracy %g"%sess.run(accuracy,feed_dict={x: test_datas, y_: test_labels,keep_prob:1.0})
