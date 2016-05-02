@@ -35,14 +35,16 @@ def OneHot_Encoding(x):
 	return labels
 #将二维narray数组的图片数据进行预处理
 def normalization2(x):
+	x = x.T
 	mean = np.mean(x,axis=0)
 	var  = np.var(x,axis=0)
-	return (x-mean)/var
+	return ((x-mean)/var).T
 #将三维narray数组的图片数据进行预处理
 def normalization3(x):
-	mean = np.mean(np.mean(x,axis=0),axis=0)
-	var = np.var(np.var(x,axis=0),axis=0)
-	return (x-mean)/var
+	xshape = x.shape
+	x= x.reshape(xshape[0]*xshape[1],xshape[2]).T
+	x = normalization3(x)
+	return x.T.reshape(xshape[0],xshape[1],xshape[2])
 #测试数据集的预处理
 test = unpickle("test_batch")
 row = test['data'].shape[0]
@@ -55,7 +57,7 @@ data = [];label=[]
 for i in range(5):
 	file = "data_batch_%d" % (i+1)
 	temp = unpickle(file)
-	data.append(temp['data']))
+	data.append(temp['data'])
 	label.append(OneHot_Encoding(temp['labels']))
 train_datas = normalization3(np.array(data));train_labels = np.array(label)
 #搭建预测模型softmax
