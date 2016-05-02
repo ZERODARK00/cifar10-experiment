@@ -2,7 +2,7 @@
 import tensorflow as tf
 import numpy as np
 import random as rd
-#hello world,here  is something that i add
+
 #创建权值和偏置
 def weight_variable(shape):
 	initial = tf.truncated_normal(shape,stddev=0.1)
@@ -100,11 +100,11 @@ for i in range(100000):
 	j = rd.randint(0,4)
 	batch_x = train_datas[j][data_num];batch_y = train_labels[j][data_num]
 	if i%100 == 0:
-		train_accuracy = sess.run(accuracy,feed_dict={ x:batch_x, y_: batch_y, keep_prob: 0.5})
+		train_accuracy = sess.run(accuracy,feed_dict={ x:batch_x, y_: batch_y, keep_prob: 1.0})
 		print "step %d, training accuracy %g"%(i, train_accuracy)
 	sess.run(train_step,feed_dict = {x:batch_x,y_:batch_y,keep_prob:0.5})
 
 #评价训练结果
-print "test accuracy %g"%sess.run(accuracy,feed_dict={x: test_datas, y_: test_labels,keep_prob:0.5})
+print "test accuracy %g"%sess.run(accuracy,feed_dict={x: test_datas, y_: test_labels,keep_prob:1.0})
 
 
