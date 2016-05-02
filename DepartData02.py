@@ -58,6 +58,7 @@ x = tf.placeholder("float",[None,3072])
 y_ = tf.placeholder("float",[None,10])
 W = tf.Variable(tf.zeros([row,10]))
 b = tf.Variable(tf.zeros([10]))
+keep_prob = tf.placeholder("float")
 
 #第一层卷积
 W_conv1 = weight_variable([5,5,3,32])
@@ -65,14 +66,14 @@ b_conv1 = bias_variable([32])
 x_image = tf.reshape(x,[-1,32,32,3])
 h_conv1 = tf.nn.relu(conv2d(x_image,W_conv1)+b_conv1)
 h_pool1 = max_pool_2x2(h_conv1)
+h_pool1_drop = tf.nn.dropout(h_pool1,keep_prob);
 
 #密集连接层
 W_fc1 = weight_variable([16*16*32,512])
 b_fc1 = bias_variable([512])
-h_pool1_flat = tf.reshape(h_pool1,[-1,16*16*32])
+h_pool1_flat = tf.reshape(h_pool1_drop,[-1,16*16*32])
 h_fc1 = tf.nn.relu(tf.matmul(h_pool1_flat,W_fc1)+b_fc1)
 
-keep_prob = tf.placeholder("float")
 h_fc1_drop = tf.nn.dropout(h_fc1,keep_prob)
 
 W_fc2 = weight_variable([512,10])
