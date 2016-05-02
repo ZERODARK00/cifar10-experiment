@@ -36,11 +36,13 @@ def OneHot_Encoding(x):
 #将二维narray数组的图片数据进行预处理
 def normalization2(x):
 	mean = np.mean(x,axis=0)
-	return x-mean
+	var  = np.var(x,axis=0)
+	return (x-mean)/var
 #将三维narray数组的图片数据进行预处理
 def normalization3(x):
 	mean = np.mean(np.mean(x,axis=0),axis=0)
-	return x-mean
+	var = np.var(np.var(x,axis=0),axis=0)
+	return (x-mean)/var
 #测试数据集的预处理
 test = unpickle("test_batch")
 row = test['data'].shape[0]
