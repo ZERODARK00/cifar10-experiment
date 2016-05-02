@@ -34,14 +34,18 @@ def OneHot_Encoding(x):
 		labels[i][x[i]]=1
 	return labels
 #将二维narray数组的图片数据进行预处理
-def normalization(x):
-	return (x-128.0)/128.0
-
+def normalization2(x):
+	mean = np.mean(x,axis=0)
+	return x-mean
+#将三维narray数组的图片数据进行预处理
+def normalization3(x):
+	mean = np.mean(np.mean(x,axis=0),axis=0)
+	return x-mean
 #测试数据集的预处理
 test = unpickle("test_batch")
 row = test['data'].shape[0]
 column = test['data'].shape[1]
-test_datas = normalization(test['data'])
+test_datas = normalization2(test['data'])
 test_labels = OneHot_Encoding(test['labels'])
 
 #训练数据集预处理
@@ -49,10 +53,9 @@ data = [];label=[]
 for i in range(5):
 	file = "data_batch_%d" % (i+1)
 	temp = unpickle(file)
-	data.append(normalization(temp['data']))
+	data.append(temp['data']))
 	label.append(OneHot_Encoding(temp['labels']))
-train_datas = np.array(data);train_labels = np.array(label)
-
+train_datas = normalization3(np.array(data));train_labels = np.array(label)
 #搭建预测模型softmax
 x = tf.placeholder("float",[None,3072])
 y_ = tf.placeholder("float",[None,10])
@@ -100,11 +103,11 @@ for i in range(100000):
 	j = rd.randint(0,4)
 	batch_x = train_datas[j][data_num];batch_y = train_labels[j][data_num]
 	if i%100 == 0:
-		train_accuracy = sess.run(accuracy,feed_dict={ x:batch_x, y_: batch_y, keep_prob: 0.5})
+		train_accuracy = sess.run(accuracy,feed_dict={ x:batch_x, y_: batch_y, keep_prob: 1.0})
 		print "step %d, training accuracy %g"%(i, train_accuracy)
 	sess.run(train_step,feed_dict = {x:batch_x,y_:batch_y,keep_prob:0.5})
 
 #评价训练结果
-print "test accuracy %g"%sess.run(accuracy,feed_dict={x: test_datas, y_: test_labels,keep_prob:0.5})
+print "test accuracy %g"%sess.run(accuracy,feed_dict={x: test_datas, y_: test_labels,keep_prob:1.0})
 
 
