@@ -2,7 +2,7 @@
 import tensorflow as tf
 import numpy as np
 import random as rd
-
+#hello world,here  is something that i add
 #创建权值和偏置
 def weight_variable(shape):
 	initial = tf.truncated_normal(shape,stddev=0.1)
