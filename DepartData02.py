@@ -42,9 +42,9 @@ def normalization2(x):
 #将三维narray数组的图片数据进行预处理
 def normalization3(x):
 	xshape = x.shape
-	x= x.reshape(xshape[0]*xshape[1],xshape[2]).T
-	x = normalization3(x)
-	return x.T.reshape(xshape[0],xshape[1],xshape[2])
+	x= x.reshape(xshape[0]*xshape[1],xshape[2])
+	x = normalization2(x)
+	return x.reshape(xshape[0],xshape[1],xshape[2])
 #测试数据集的预处理
 test = unpickle("test_batch")
 row = test['data'].shape[0]
@@ -59,7 +59,8 @@ for i in range(5):
 	temp = unpickle(file)
 	data.append(temp['data'])
 	label.append(OneHot_Encoding(temp['labels']))
-train_datas = normalization3(np.array(data));train_labels = np.array(label)
+train_datas = normalization3(np.array(data))
+train_labels = np.array(label)
 #搭建预测模型softmax
 x = tf.placeholder("float",[None,3072])
 y_ = tf.placeholder("float",[None,10])
